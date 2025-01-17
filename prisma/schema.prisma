@@ -37,8 +37,9 @@ model flightCard {
   beginTime String
   endTime String
   departureDate String
+  nonStop Boolean @default(false)
   notify Boolean @default(false)
-  threshold Int?
+  threshold Int? 
   createdAt DateTime @default(now())
   user User @relation(fields: [userId], references: [id])
 }
