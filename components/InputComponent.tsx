@@ -1,0 +1,49 @@
+"use client"
+
+import { useState } from "react"
+import InputBox from "./InputBox"
+import { DatePicker } from "./DatePicker"
+import { Button } from "./SubmitButton"
+import { TimePicker } from "./TimePicker"
+import { FavButton } from "./FavButton"
+import { Checkbox } from "./CustomCheckbox"
+
+export default function InputComponent(){
+    const [from, setFrom] = useState<string>("")
+    const [to, setTo] = useState<string>("")
+    const [selectedDate, setSelectedDate] = useState<Date>(new Date())
+    const [startTime, setStartTime] = useState(new Date())
+    const [endTime, setEndTime] = useState(new Date())
+    const [checked, setChecked] = useState(false)
+
+    return (
+        <div className="bg-white/10 rounded-md p-10 flex flex-col gap-10 font-satoshi">
+            <div className="font-black text-3xl">Enter Flight Details</div>
+            <div className="grid grid-cols-2 gap-20">
+                <InputBox state={from} setState={setFrom} label="Origin" placeholder="DEL"/>
+                <InputBox state={to} setState={setTo} label="Destination" placeholder="GOA"/>
+            </div>
+            <div className="grid grid-cols-2 gap-20">
+                    <div className="flex flex-col gap-2">
+                        <div className="font-bold">Time Range Start</div>
+                        <TimePicker value={startTime} onChange={setStartTime}/>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <div className="font-bold">Time Range End</div>
+                        <TimePicker value={endTime} onChange={setEndTime}/>
+                    </div>
+            </div>
+            <div className="flex flex-col gap-2">
+                <div className="font-bold">Date : </div>
+                <DatePicker selectedDate={selectedDate} onChange={setSelectedDate}/>
+            </div>
+            <div className="flex">
+                <Checkbox checked={checked} setChecked={setChecked}/>
+            </div>
+            <div className="grid grid-cols-2 gap-20 font-bold">
+                <Button from={from} to={to} departureDate={selectedDate} startTime={startTime} endTime={endTime} checked={checked}/>
+                <FavButton />
+            </div>
+        </div>
+    )
+}
