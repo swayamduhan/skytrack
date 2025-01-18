@@ -7,6 +7,8 @@ import { Button } from "./SubmitButton"
 import { TimePicker } from "./TimePicker"
 import { FavButton } from "./FavButton"
 import { Checkbox } from "./CustomCheckbox"
+import { makeTimeString } from "@/app/lib/makeTimeString"
+import { SessionProvider } from "next-auth/react"
 
 export default function InputComponent(){
     const [from, setFrom] = useState<string>("")
@@ -42,7 +44,9 @@ export default function InputComponent(){
             </div>
             <div className="grid grid-cols-2 gap-20 font-bold">
                 <Button from={from} to={to} departureDate={selectedDate} startTime={startTime} endTime={endTime} checked={checked}/>
-                <FavButton />
+                <SessionProvider>
+                <FavButton origin={from} destination={to} departureDate={selectedDate.toDateString()} beginTime={makeTimeString(startTime)} endTime={makeTimeString(endTime)} nonStop={checked}/>
+                </SessionProvider>
             </div>
         </div>
     )

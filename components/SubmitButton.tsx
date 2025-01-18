@@ -4,6 +4,7 @@ import { RequestData } from "@/app/api/scrapetwo/route"
 import { useAtom, useSetAtom } from "jotai"
 import { flightResult, loadingResults, showCards } from "@/store/atoms"
 import { makeTimeString } from "@/app/lib/makeTimeString"
+import { toast } from "sonner"
 
 
 export function Button({ from, to, startTime, endTime, departureDate, checked } : { from : string, to : string, startTime : Date, endTime : Date, departureDate : Date, checked : boolean }){
@@ -53,9 +54,19 @@ async function handleSubmit(from : string, to : string, startTime : Date, endTim
         const response = await axios.post('api/scrapetwo', requestBody)
         setLoading(false)
         setOutput(response.data.flights)
-    } catch (e) {
+    } catch (error : any) {
         setLoading(false)
-        console.log(e)
+        if (error.response) {
+            console.log('Error Response:', error.response); 
+            console.log('Error Message:', error.response.data.message); 
+            toast.error(error.response.data.message); 
+        } else if (error.request) {
+            console.log('Error Request:', error.request);
+            toast.error("No response from the server. Please try again.");
+        } else {
+            console.log('Error Message:', error.message);
+            toast.error("An unexpected error occurred. Please try again.");
+        }
     }
 }
 
