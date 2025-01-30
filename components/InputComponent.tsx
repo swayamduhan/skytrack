@@ -19,7 +19,7 @@ export default function InputComponent(){
     const [checked, setChecked] = useState(false)
 
     return (
-        <div className="bg-white/10 rounded-md p-10 flex flex-col gap-10 font-satoshi">
+        <div className="bg-black/5 dark:bg-white/10 rounded-md p-10 flex flex-col gap-10 font-satoshi text-[var(--foreground)] dark:text-[var(--foreground-dark)]">
             <div className="font-black text-3xl">Enter Flight Details</div>
             <div className="grid grid-cols-2 gap-20">
                 <InputBox state={from} setState={setFrom} label="Origin" placeholder="DEL"/>
@@ -40,7 +40,7 @@ export default function InputComponent(){
                 <DatePicker selectedDate={selectedDate} onChange={setSelectedDate}/>
             </div>
             <div className="flex">
-                <Checkbox checked={checked} setChecked={setChecked}/>
+                <Checkbox checked={checked} setChecked={setChecked} label="Show NonStop flights only"/>
             </div>
             <div className="grid grid-cols-2 gap-20 font-bold">
                 <Button from={from} to={to} departureDate={selectedDate} startTime={startTime} endTime={endTime} checked={checked}/>

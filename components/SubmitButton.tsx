@@ -27,8 +27,8 @@ export function Button({ from, to, startTime, endTime, departureDate, checked } 
 
 
     return (
-        <div className={`p-2 rounded-md flex justify-center items-center bg-black/60 border-b border-r relative group ${loading ? "pointer-events-none opacity-50" : "cursor-pointer"}`} onClick={()=>handleSubmit(from, to, startTime, endTime, departureDate, checked, setOutput, setLoading, setShowUserCards)} ref={submitRef}>
-            <div className="absolute bg-white inset-0 z-10 mix-blend-difference top-10 group-hover:top-0 duration-100 rounded-md"></div>
+        <div className={`p-2 rounded-md flex justify-center items-center bg-black/10 hover:bg-black/5 border-b-2 border-r-2 border-black dark:bg-black/60 dark:border-b dark:border-r relative group ${loading ? "pointer-events-none opacity-50" : "cursor-pointer"}`} onClick={()=>handleSubmit(from, to, startTime, endTime, departureDate, checked, setOutput, setLoading, setShowUserCards)} ref={submitRef}>
+            <div className="absolute bg-black dark:bg-white inset-0 z-10 mix-blend-difference top-10 group-hover:top-0 duration-100 rounded-md"></div>
             <div className="relative">{loading ? "Loading ..." : "Submit"}</div>
         </div>
     )

@@ -9,10 +9,11 @@ interface createCardProps {
     endTime : string;
     departureDate : string;
     nonStop : boolean;
+    threshold : number
 }
 
 export async function POST(req : NextRequest){
-    const { userId, origin, destination, beginTime, endTime, departureDate, nonStop } : createCardProps = await req.json()
+    const { userId, origin, destination, beginTime, endTime, departureDate, nonStop, threshold } : createCardProps = await req.json()
 
     if(!userId){
         return NextResponse.json({ message : "USER_NOT_LOGGED_IN"}, { status : 400 })
@@ -31,7 +32,8 @@ export async function POST(req : NextRequest){
                 beginTime,
                 endTime,
                 departureDate,
-                nonStop
+                nonStop,
+                threshold
             }
         })
         if(existingCard){
@@ -46,7 +48,8 @@ export async function POST(req : NextRequest){
                 beginTime,
                 endTime,
                 departureDate,
-                nonStop
+                nonStop,
+                threshold
             }
         })
 

@@ -28,7 +28,7 @@ export function OutputComponent() {
   const loading = useAtomValue(loadingResults)
 
   return (
-    <div className="bg-white/10 rounded-md">
+    <div className="bg-black/5 dark:bg-white/10 rounded-md">
       <AnimatePresence mode="wait">
         {loading ? (
           <div key="loading-flights">

@@ -1,7 +1,7 @@
 import { Check } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
-export function Checkbox({ checked, setChecked } : { checked : boolean, setChecked : any }){
+export function Checkbox({ checked, setChecked, label } : { checked : boolean, setChecked : any, label : string }){
     console.log(checked)
     return (
         <label className="flex cursor-pointer items-center gap-4 group">
@@ -21,7 +21,7 @@ export function Checkbox({ checked, setChecked } : { checked : boolean, setCheck
                     }
                 </AnimatePresence>
             </div>
-            <span className="text-white/70 group-hover:text-white transition-colors duration-300">Show NonStop flights only</span>
+            <span className="text-black/70 dark:text-white/70 group-hover:text-black dark:group-hover:text-white transition-colors duration-300">{label}</span>
         </label>
     )
 }
