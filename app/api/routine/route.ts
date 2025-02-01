@@ -3,7 +3,7 @@ import { Prisma } from "@prisma/client";
 import axios from "axios";
 import { NextResponse } from "next/server";
 
-interface FlightCard {
+export interface FlightCard {
     id: string;
     userId: number;
     origin: string;

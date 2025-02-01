@@ -26,7 +26,7 @@ export default function Navbar(){
         if(status === "unauthenticated"){
             console.log("you are not logged in! toast")
         } else {
-            router.push('/cards')
+            router.push('/saved')
         }
     }
 

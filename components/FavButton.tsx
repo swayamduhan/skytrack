@@ -73,7 +73,7 @@ export function FavButton({ origin, destination, beginTime, endTime, departureDa
                             <div className="flex flex-col gap-4">
                                 <Checkbox checked={checked} setChecked = {setChecked} label="Wish to get notified?"/>
                                 {checked && (
-                                    <input type="number" className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none bg-inherit border font-normal rounded-md p-1" placeholder="enter discount threshold" onChange={(e)=>setThreshold(Number(e.target.value))}/>
+                                    <input type="number" className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none bg-inherit border font-normal rounded-md p-1" placeholder="desired price?" onChange={(e)=>setThreshold(Number(e.target.value))}/>
                                 )}
                             </div>
                         </div>
