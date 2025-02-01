@@ -1,0 +1,17 @@
+# name: Trigger Flight Routine
+
+# on:
+#   schedule:
+#     - cron: '* */12 * * *'
+
+# jobs:
+#   run-cron-job:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+
+#       - name: Trigger Flight Notifying Routine
+#         run: |
+#           curl -X GET https://your-prod-url.com/api/routine

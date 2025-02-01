@@ -23,15 +23,17 @@ export function FavButton({ origin, destination, beginTime, endTime, departureDa
     const [isOpen, setIsOpen] = useState(false)
     const isDark = useAtomValue(darkMode)
     const [checked, setChecked] = useState(false)
-    const [threshold, setThreshold] = useState(0)
+    const [threshold, setThreshold] = useState(-1)
     const { data : session, status } = useSession()
 
     async function handleClick(){
         if(checked && threshold == 0){
             toast.error("Please enter your discount requirement :)")
+            return
         }
         //@ts-ignore
-        await favouriteCard(session?.user?.id, origin, destination, beginTime, endTime, departureDate, nonStop, setFavLoading, threshold)
+        await favouriteCard(session?.user?.id, origin, destination, beginTime, endTime, departureDate, nonStop, setFavLoading, checked, threshold)
+        toast.success("Flight saved successfully!")
         setIsOpen(false)
     }
 

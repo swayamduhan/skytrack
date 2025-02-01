@@ -9,11 +9,12 @@ interface createCardProps {
     endTime : string;
     departureDate : string;
     nonStop : boolean;
+    notify : boolean,
     threshold : number
 }
 
 export async function POST(req : NextRequest){
-    const { userId, origin, destination, beginTime, endTime, departureDate, nonStop, threshold } : createCardProps = await req.json()
+    const { userId, origin, destination, beginTime, endTime, departureDate, nonStop, notify, threshold } : createCardProps = await req.json()
 
     if(!userId){
         return NextResponse.json({ message : "USER_NOT_LOGGED_IN"}, { status : 400 })
@@ -36,11 +37,12 @@ export async function POST(req : NextRequest){
                 threshold
             }
         })
+        
         if(existingCard){
             return NextResponse.json({ message : "Card already exists!"}, { status : 400 })
         }
 
-        const newCard = await prisma.flightCard.create({
+        await prisma.flightCard.create({
             data : {
                 userId,
                 origin,
@@ -49,6 +51,7 @@ export async function POST(req : NextRequest){
                 endTime,
                 departureDate,
                 nonStop,
+                notify,
                 threshold
             }
         })
