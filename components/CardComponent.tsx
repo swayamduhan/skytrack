@@ -27,7 +27,7 @@ export function CardComponent(){
     return (
         <div className="w-full h-full py-4 font-satoshi text-black dark:text-white">
             {status === "unauthenticated" ?
-            <CenteredText>Please login first!</CenteredText>
+            <CenteredText>Login to start saving flight data! Refer to "how to use?"</CenteredText>
             :
             (
                 loading ? (
@@ -35,7 +35,7 @@ export function CardComponent(){
                 ) :
                 (
                     userCards.length === 0 ?
-                    <CenteredText>Fill the details and click on Favourite button to save a card!</CenteredText>
+                    <CenteredText>Fill the details and click on Favourite button to save a card! Refer to "how to use?"</CenteredText>
                     : 
                     <Cards userCards={userCards}/>
                 )
