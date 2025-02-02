@@ -70,7 +70,7 @@ async function fetchAndMail(card : FlightCard){
     }
 
     try {
-        const response = await axios.post(`${process.env.NEXTAUTH_URL}api/scrapetwo`, requestBody)
+        const response = await axios.post(`${process.env.NEXTAUTH_URL}api/scrape`, requestBody)
         const flights : FlightSchema[] = response.data.flights
         if(flights.length === 0) {
             return

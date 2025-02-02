@@ -8,9 +8,8 @@ import { useEffect, useState } from "react"
 import arrow from "@/public/arrow.svg"
 import { ArrowSVG } from "./Arrow"
 import { FlightCard } from "@/app/api/routine/route"
-import { convertTo12Hour } from "@/app/(dashboard)/saved/page"
 import { MoveRight } from "lucide-react"
-import { RequestData } from "@/app/api/scrapetwo/route"
+import { RequestData } from "@/app/api/scrape/route"
 import axios from "axios"
 import { toast } from "sonner"
 
@@ -23,6 +22,17 @@ export function CardComponent(){
         // @ts-ignore
         fetchUserCards(setUserCards, setLoading, session?.user?.id)
     }, [])
+
+        function convertTo12Hour(timeInput : string) : string{
+        let hrs = Number(timeInput.substring(0,2))
+        const mins = Number(timeInput.substring(2))
+        if(hrs > 12){
+            hrs -= 12;
+            return `${hrs}:${mins} PM`
+        } else {
+            return `${hrs}:${mins} AM`
+        }
+    }
 
     return (
         <div className="w-full h-full py-4 font-satoshi text-black dark:text-white">
@@ -73,7 +83,7 @@ const Cards = ({ userCards } : { userCards : FlightCard[]}) => {
         try{
             setLoading(true)
             setShowUserCards(false)
-            const response = await axios.post('api/scrapetwo', requestBody)
+            const response = await axios.post('/api/scrape', requestBody)
             setOutput(response.data.flights)
         } catch (error : any) {
             if (error.response) {
@@ -89,6 +99,16 @@ const Cards = ({ userCards } : { userCards : FlightCard[]}) => {
             }
         } finally {
             setLoading(false)
+        }
+    }
+    function convertTo12Hour(timeInput : string) : string{
+        let hrs = Number(timeInput.substring(0,2))
+        const mins = Number(timeInput.substring(2))
+        if(hrs > 12){
+            hrs -= 12;
+            return `${hrs}:${mins} PM`
+        } else {
+            return `${hrs}:${mins} AM`
         }
     }
 

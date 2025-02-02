@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react"
 import axios from "axios"
-import { RequestData } from "@/app/api/scrapetwo/route"
+import { RequestData } from "@/app/api/scrape/route"
 import { useAtom, useSetAtom } from "jotai"
 import { flightResult, loadingResults, showCards } from "@/store/atoms"
 import { makeTimeString } from "@/app/lib/makeTimeString"
@@ -53,7 +53,7 @@ async function handleSubmit(from : string, to : string, startTime : Date, endTim
     try{
         setLoading(true)
         setShowUserCards(false)
-        const response = await axios.post('api/scrapetwo', requestBody)
+        const response = await axios.post('/api/scrape', requestBody)
         setLoading(false)
         setOutput(response.data.flights)
     } catch (error : any) {

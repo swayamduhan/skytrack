@@ -14,16 +14,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-export function convertTo12Hour(timeInput : string) : string{
-    let hrs = Number(timeInput.substring(0,2))
-    let mins = Number(timeInput.substring(2))
-    if(hrs > 12){
-        hrs -= 12;
-        return `${hrs}:${mins} PM`
-    } else {
-        return `${hrs}:${mins} AM`
-    }
-}
 
 export default function Saved(){
     return (
@@ -46,17 +36,17 @@ function SavedCards(){
     const [notisLoading, setNotisLoading] = useState<{[key : number] : boolean}>({})
     const [modalLoading, setModalLoading] = useState(false)
     console.log(darkMode)
-
+    
     useEffect(()=>{
         if(status === "unauthenticated"){
             router.push("/track")
             return
         }
-    
+        
         // @ts-ignore
         fetchUserCards(setUserCards, setLoading, session?.user?.id)
     }, [status, render])
-
+    
     async function handleDeleteCard(cardId : string, index : number){
         setRemoveLoading(prev => ({...prev, [index] : true}))
         try {
@@ -74,7 +64,7 @@ function SavedCards(){
             })
         }
     }
-
+    
     async function handleNotisOn(cardId : string){
         if(thres <= 0){
             toast.error("Enter valid price!")
@@ -102,7 +92,7 @@ function SavedCards(){
             setModalLoading(false)
         }
     }
-
+    
     async function handleNotisOff(cardId : string, index : number){
         setNotisLoading(prev => ({...prev, [index] : true}))
         const reqBody : NotificationProps = {
@@ -124,9 +114,9 @@ function SavedCards(){
             })
         }
     }
-
+    
     return (
-            <div className="dark:bg-[var(--background-dark)] min-h-screen inset-0 relative dark:text-[var(--foreground-dark)]">
+        <div className="dark:bg-[var(--background-dark)] min-h-screen inset-0 relative dark:text-[var(--foreground-dark)]">
                 <JotaiProvider>
                     <AuthProvider>
                         <Navbar />
@@ -138,7 +128,7 @@ function SavedCards(){
                         {loading ? (
                             <div>Loading please wait brah :O</div>
                         ) : (
-                        <div className="w-full grid grid-cols-2 gap-4 overflow-y-auto max-h-[60vh] pr-2">
+                            <div className="w-full grid grid-cols-2 gap-4 overflow-y-auto max-h-[60vh] pr-2">
                             {userCards.map((card, index)=>{
                                 return (
                                     <div key={index} className="border border-gray-600 p-4 rounded-md flex flex-col gap-4">
@@ -208,4 +198,15 @@ function SavedCards(){
                 <Footer />
             </div>
         )
-}
+    }
+    
+    function convertTo12Hour(timeInput : string) : string{
+        let hrs = Number(timeInput.substring(0,2))
+        const mins = Number(timeInput.substring(2))
+        if(hrs > 12){
+            hrs -= 12;
+            return `${hrs}:${mins} PM`
+        } else {
+            return `${hrs}:${mins} AM`
+        }
+    }

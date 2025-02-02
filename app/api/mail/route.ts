@@ -19,6 +19,9 @@ export async function POST(req : NextRequest){
     } else if (type === "FLIGHT_DISCOUNT"){
         subject = "Flights at discount!"
         text = `Hi ${username},\nYour starred flight from ${body.from} to ${body.to} on ${body.date} at ${body.time} is available at a discounted price ${body.price} INR, slightly higher than your threshold ${body.threshold}.\n\nRegards,\nSkytrack`
+    } else if (type === "ROUTINE_ERROR"){
+        subject = "Flight tracking failed!"
+        text = `Hi ${username},\nSorry to inform that your saved flight track is failing.\nPlease recheck details.\n\nRegards,\nSkytrack`
     } else {
         return NextResponse.json({ message : "Invalid TYPE"}, { status : 500 })
     }

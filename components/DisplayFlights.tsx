@@ -1,4 +1,4 @@
-import { Flight } from "@/app/api/scrapetwo/route";
+import { Flight } from "@/app/api/scrape/route";
 import { flightResult, showCards } from "@/store/atoms";
 import { useSetAtom } from "jotai";
 import { Clock } from "lucide-react";
