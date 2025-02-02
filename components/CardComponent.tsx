@@ -1,68 +1,22 @@
 'use client'
 
 import { fetchUserCards } from "@/app/lib/fetchUserCards"
-import { cards, darkMode, loadingResults } from "@/store/atoms"
-import { useAtom, useAtomValue } from "jotai"
+import { cards, darkMode, flightResult, loadingResults, showCards } from "@/store/atoms"
+import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 import arrow from "@/public/arrow.svg"
 import { ArrowSVG } from "./Arrow"
-
-interface CardInfo {
-    origin : string;
-    destination : string;
-    startTime : string;
-    endTime : string;
-    nonStop : boolean;
-    departureDate : string;
-}
-
-const decoyCards : CardInfo[] = [
-    {
-        origin : "Delhi",
-        destination : "Dubai",
-        startTime : "1400",
-        endTime : "1800",
-        nonStop : true,
-        departureDate : "19 Jan 2025"
-    },
-    {
-        origin : "Delhi",
-        destination : "Dubai",
-        startTime : "1400",
-        endTime : "1800",
-        nonStop : true,
-        departureDate : "19 Jan 2025"
-    },
-    {
-        origin : "Delhi",
-        destination : "Dubai",
-        startTime : "1400",
-        endTime : "1800",
-        nonStop : true,
-        departureDate : "19 Jan 2025"
-    },
-    {
-        origin : "Delhi",
-        destination : "Dubai",
-        startTime : "1400",
-        endTime : "1800",
-        nonStop : true,
-        departureDate : "19 Jan 2025"
-    },
-    {
-        origin : "Delhi",
-        destination : "Dubai",
-        startTime : "1400",
-        endTime : "1800",
-        nonStop : true,
-        departureDate : "19 Jan 2025"
-    }
-]
+import { FlightCard } from "@/app/api/routine/route"
+import { convertTo12Hour } from "@/app/(dashboard)/saved/page"
+import { MoveRight } from "lucide-react"
+import { RequestData } from "@/app/api/scrapetwo/route"
+import axios from "axios"
+import { toast } from "sonner"
 
 export function CardComponent(){
     const [userCards, setUserCards] = useAtom(cards)
-    const [loading, setLoading] = useState(loadingResults)
+    const [loading, setLoading] = useState(false)
     const { data : session, status } = useSession()
 
     useEffect(()=>{
@@ -71,23 +25,28 @@ export function CardComponent(){
     }, [])
 
     return (
-        <div className="w-full h-full max-h-[600px] py-4 font-satoshi text-black dark:text-white">
+        <div className="w-full h-full py-4 font-satoshi text-black dark:text-white">
             {status === "unauthenticated" ?
             <CenteredText>Please login first!</CenteredText>
             :
             (
-                decoyCards.length === 0 ?
-                <CenteredText>Fill the details and click on Favourite button to save a card!</CenteredText>
-                : 
-                <Cards userCards={decoyCards}/>
+                loading ? (
+                    <CenteredText>Loading, please wait!</CenteredText>
+                ) :
+                (
+                    userCards.length === 0 ?
+                    <CenteredText>Fill the details and click on Favourite button to save a card!</CenteredText>
+                    : 
+                    <Cards userCards={userCards}/>
+                )
             )}
         </div>
     )
 }
 
-const CenteredText = ({children} : { children : any}) => {
+export const CenteredText = ({children} : { children : any}) => {
     return (
-        <div className="h-full flex justify-center items-center">
+        <div className="h-full flex justify-center items-center text-black dark:text-white">
             <p className="text-2xl p-48 font-bold">
                 {children}
             </p>
@@ -96,21 +55,62 @@ const CenteredText = ({children} : { children : any}) => {
 }
 
 
-const Cards = ({ userCards } : { userCards : CardInfo[]}) => {
+const Cards = ({ userCards } : { userCards : FlightCard[]}) => {
     const isDark = useAtomValue(darkMode)
+    const setOutput = useSetAtom(flightResult)
+    const [loading, setLoading] = useAtom(loadingResults)
+    const setShowUserCards = useSetAtom(showCards)
+
+    async function handleSearch(origin : string, destination : string, beginTime : string, endTime : string, departureDate : string, nonStop : boolean){
+        const requestBody : RequestData = {
+            origin,
+            destination,
+            beginTime,
+            endTime,
+            departureDate,
+            nonStop
+        }
+        try{
+            setLoading(true)
+            setShowUserCards(false)
+            const response = await axios.post('api/scrapetwo', requestBody)
+            setOutput(response.data.flights)
+        } catch (error : any) {
+            if (error.response) {
+                console.log('Error Response:', error.response); 
+                console.log('Error Message:', error.response.data.message); 
+                toast.error(error.response.data.message); 
+            } else if (error.request) {
+                console.log('Error Request:', error.request);
+                toast.error("No response from the server. Please try again.");
+            } else {
+                console.log('Error Message:', error.message);
+                toast.error("An unexpected error occurred. Please try again.");
+            }
+        } finally {
+            setLoading(false)
+        }
+    }
+
     return (
-        <div className="h-full w-full grid grid-cols-2 p-6 gap-6 overflow-y-auto">
+        <div className="w-full max-h-[600px] grid grid-cols-1 xl:grid-cols-2 p-6 gap-6 overflow-y-auto">
             {userCards.map((card, index)=>(
-                <div key={index} className="rounded-md p-4 min-h-[200px] flex flex-col shadow-md dark:shadow-xl border border-slate-700">
-                    <div className="flex justify-around items-center text-xl font-bold">
-                        <div>{card.origin}</div>
-                        <ArrowSVG fill={isDark ? "#fff" : "#000"}/>
-                        <div>{card.destination}</div>
+                <div key={index} className="relative rounded-md p-4 min-h-[150px] flex flex-col gap-2 shadow-lg dark:shadow-xl border border-gray-400">
+                    <div className="flex justify-between items-center font-bold">
+                        <div className="flex items-center justify-center text-lg gap-2">
+                            <div>{card.origin}</div>
+                                <MoveRight fill={isDark ? "#fff" : "#000"}/>
+                            <div>{card.destination}</div>
+                        </div>
+                        <div className="text-sm">
+                            {card.nonStop ? "nonstop" : "with stops"}
+                        </div>
                     </div>
-                    <div className="w-full border-b dark:border-slate-700 border-slate-300"></div>
-                    <div>
-                        Range : {card.startTime} - {card.endTime}
+                    <div className="w-full border-b dark:border-gray-400 border-gray-300"></div>
+                    <div className="text-gray-700 dark:text-gray-300 text-sm"> 
+                        Tracking from <span className="text-black dark:text-white font-bold">{convertTo12Hour(card.beginTime)}</span> to <span className="text-black dark:text-white font-bold">{convertTo12Hour(card.endTime)}</span><br></br>on <span className="text-black dark:text-white font-bold">{card.departureDate}</span><br></br>Notifications : <span className="font-bold dark:text-white text-black">{card.notify ? "ON" : "OFF"}</span>
                     </div>
+                    <button className={`absolute bottom-0 right-0 m-2 border p-1 rounded-md px-2 text-sm bg-black text-white dark:bg-white dark:text-black font-bold ${loading ? "pointer-events-none" : ""}`} onClick={()=>handleSearch(card.origin, card.destination, card.beginTime, card.endTime, card.departureDate, card.nonStop)}>Search</button>
                 </div>
             ))}
         </div>

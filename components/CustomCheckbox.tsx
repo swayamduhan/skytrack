@@ -2,7 +2,6 @@ import { Check } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
 export function Checkbox({ checked, setChecked, label } : { checked : boolean, setChecked : any, label : string }){
-    console.log(checked)
     return (
         <label className="flex cursor-pointer items-center gap-4 group">
             <input type="checkbox" className="peer sr-only" checked={checked} onChange={()=>setChecked(!checked)}/>

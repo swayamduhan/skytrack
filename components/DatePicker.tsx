@@ -70,6 +70,8 @@ export function DatePicker({ selectedDate, onChange }: DatePickerProps) {
         new Date().getDate() === day && 
         new Date().getMonth() === currentMonth && 
         new Date().getFullYear() === currentYear;
+      
+      const buttonDate = new Date(currentYear, currentMonth, day)
 
       days.push(
         <button
@@ -78,11 +80,12 @@ export function DatePicker({ selectedDate, onChange }: DatePickerProps) {
           className={`
             h-8 w-8 rounded-full flex items-center justify-center text-sm
             transition-colors duration-200
+            ${new Date() > buttonDate ? "pointer-events-none text-gray-300 dark:text-gray-500" : ""}
             ${isSelected 
               ? 'bg-indigo-600 text-white hover:bg-indigo-700' 
               : isToday
                 ? 'bg-indigo-100 text-indigo-800 hover:bg-indigo-200'
-                : 'hover:bg-gray-100'
+                : 'hover:bg-gray-100 dark:hover:text-black'
             }
           `}
         >

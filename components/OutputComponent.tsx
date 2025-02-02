@@ -1,11 +1,14 @@
 'use client'
 
-import { flightResult, loadingResults, showCards } from "@/store/atoms"
+import { darkMode, flightResult, loadingResults, showCards } from "@/store/atoms"
 import { useAtom, useAtomValue } from "jotai"
 import { DisplayFlights } from "./DisplayFlights"
 import { AnimatePresence, motion, Variants } from "motion/react"
-import { CardComponent } from "./CardComponent"
+import { CardComponent, CenteredText } from "./CardComponent"
 import { SessionProvider } from "next-auth/react"
+import { useState } from "react"
+import { ArrowSVG } from "./Arrow"
+import { X } from "lucide-react"
 
 const containerVariants: Variants = {
   hidden: {
@@ -26,13 +29,17 @@ export function OutputComponent() {
   const [output, setOutput] = useAtom(flightResult)
   const [showUserCards, setShowUserCards] = useAtom(showCards)
   const loading = useAtomValue(loadingResults)
+  const [open, isOpen] = useState(true)
+  const isDark = useAtomValue(darkMode)
 
   return (
     <div className="bg-black/5 dark:bg-white/10 rounded-md">
       <AnimatePresence mode="wait">
         {loading ? (
           <div key="loading-flights">
-            Loading results...
+            <CenteredText>
+              Loading results...
+            </CenteredText>
           </div>
         ) : showUserCards ? (
           <div

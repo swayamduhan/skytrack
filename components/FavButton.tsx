@@ -52,12 +52,12 @@ export function FavButton({ origin, destination, beginTime, endTime, departureDa
     return (
         <>
             <button className="border border-black p-2 rounded-md group relative bg-yellow-400 hover:rotate-[-3deg] duration-200 text-black" onClick={handleFavorite}>
-                <Star fill="#FEE62F" color="#000" className="absolute left-20 top-[10px] group-hover:top-[-30px] group-hover:left-[180px] group-hover:right-0 group-hover:rotate-[-45deg] duration-200 ease-out h-5 w-5 group-hover:h-[60px] group-hover:w-[60px]"/>
-                <span className="absolute top-[8px] left-[40%] group-hover:text-xl group-hover:left-[32%] duration-200">{favLoading ? "Favoriting..." : "Favorite"}</span>
+                <Star fill="#FEE62F" color="#000" className="absolute left-1/2 -translate-x-[3.5rem] top-[10px] group-hover:top-[-30px] group-hover:translate-x-[3rem] group-hover:right-0 group-hover:rotate-[-45deg] duration-200 ease-out h-5 w-5 group-hover:h-[60px] group-hover:w-[60px]"/>
+                <span className="text-center top-[8px] left-[40%] group-hover:text-xl group-hover:left-[32%] duration-200">{favLoading ? "Favoriting..." : "Favorite"}</span>
             </button>
 
             {isOpen && (
-                <div className="fixed inset-0 dark:bg-black/30 bg-black/10 backdrop-blur-[2px] dark:backdrop-blur-xl flex items-center justify-center">
+                <div className="fixed inset-0 dark:bg-black/30 bg-black/10 backdrop-blur-xl flex items-center justify-center">
                     <div className="flex flex-col gap-5 items-center shadow-md bg-[var(--background)] dark:bg-[var(--background-dark)] rounded-md relative dark:text-white text-black overflow-hidden">
                     <div className="absolute top-[-100px] w-full h-full bg-gradient-to-br from-black/30 dark:from-white/30 via-black/5 dark:via-white/5 to-transparent blur-3xl pointer-events-none" />
                         <div className="absolute h-10 w-10 top-0 right-0 flex items-center justify-center cursor-pointer" onClick={()=>setIsOpen(false)}>

@@ -1,12 +1,12 @@
 'use client'
+import { NotificationProps } from "@/app/api/cards/toggle-noti/route";
 import { JotaiProvider } from "@/app/JotaiProvider";
-import { NEXT_AUTH_CONFIG } from "@/app/lib/auth";
 import { fetchUserCards } from "@/app/lib/fetchUserCards";
 import { AuthProvider } from "@/app/provider";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { prisma } from "@/prisma/prisma";
-import { cards } from "@/store/atoms";
+import { cards, darkMode } from "@/store/atoms";
+import axios from "axios";
 import { useAtom } from "jotai";
 import { Bell, MoveRight, PlaneTakeoff, X } from "lucide-react";
 import { SessionProvider, useSession } from "next-auth/react";
@@ -14,9 +14,16 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-// what's left ? 
-// check for overflow when multiple cards
-// set up prisma api endpoints to call for updation / removal of card
+export function convertTo12Hour(timeInput : string) : string{
+    let hrs = Number(timeInput.substring(0,2))
+    let mins = Number(timeInput.substring(2))
+    if(hrs > 12){
+        hrs -= 12;
+        return `${hrs}:${mins} PM`
+    } else {
+        return `${hrs}:${mins} AM`
+    }
+}
 
 export default function Saved(){
     return (
@@ -38,13 +45,14 @@ function SavedCards(){
     const [thres, setThres] = useState(-1)
     const [notisLoading, setNotisLoading] = useState<{[key : number] : boolean}>({})
     const [modalLoading, setModalLoading] = useState(false)
+    console.log(darkMode)
 
     useEffect(()=>{
         if(status === "unauthenticated"){
             router.push("/track")
             return
         }
-        console.log("function called!")
+    
         // @ts-ignore
         fetchUserCards(setUserCards, setLoading, session?.user?.id)
     }, [status, render])
@@ -52,12 +60,12 @@ function SavedCards(){
     async function handleDeleteCard(cardId : string, index : number){
         setRemoveLoading(prev => ({...prev, [index] : true}))
         try {
-            // await prisma.flightCard.delete({ where : { id : cardId }})
-            await new Promise(r => setTimeout(r, 2000))
+            await axios.post("/api/cards/delete", { cardId })
             rerender(prev => prev + 1)
             toast.success("Card deleted successfully!")
-        } catch ( err ) {
+        } catch ( err : any ) {
             toast.error("Error deleting card :(")
+            console.log(err.response.message || err)
         } finally {
             setRemoveLoading(prev => {
                 const updated = {...prev}
@@ -77,22 +85,19 @@ function SavedCards(){
             return
         }
         setModalLoading(true)
+        const reqBody : NotificationProps = {
+            cardId,
+            notis : true,
+            threshold : thres
+        }
         try {
-            await prisma.flightCard.update({
-                where : {
-                    id : cardId
-                },
-                data : {
-                    notify : true,
-                    threshold : thres
-                }
-            })
+            await axios.post("/api/cards/toggle-noti", reqBody)
             setIsOpen(false)
             rerender(prev => prev + 1)
             toast.success("Notifications turned on!")
-        } catch (err) {
+        } catch (err : any) {
             toast.error("Unable to turn on notifications at the moment :(")
-            console.log(err)
+            console.log(err.response.message || err)
         } finally {
             setModalLoading(false)
         }
@@ -100,20 +105,17 @@ function SavedCards(){
 
     async function handleNotisOff(cardId : string, index : number){
         setNotisLoading(prev => ({...prev, [index] : true}))
+        const reqBody : NotificationProps = {
+            cardId,
+            notis : false
+        }
         try {
-            await prisma.flightCard.update({
-                where : {
-                    id : cardId
-                },
-                data : {
-                    notify : false,
-                    threshold : -1
-                }
-            })
+            await axios.post("/api/cards/toggle-noti", reqBody)
             rerender(prev => prev + 1)
             toast.success("Notifications turned off!")
-        } catch (err) {
+        } catch (err : any) {
             toast.error("Unable to process at the moment :(")
+            console.log(err.response.message || err)
         } finally {
             setNotisLoading(prev => {
                 const updated = {...prev}
@@ -131,12 +133,12 @@ function SavedCards(){
                     </AuthProvider>
                 </JotaiProvider>
                 <div className="min-h-screen flex justify-center py-32 ">
-                    <div className="border w-full w-1/2 max-w-[1000px] flex flex-col items-center p-4 font-satoshi gap-20">
+                    <div className="w-full w-1/2 max-w-[1000px] flex flex-col items-center p-4 font-satoshi gap-10">
                         <h1 className="text-5xl font-black bg-gradient-to-b from-gray-800 dark:from-white to-gray-400 bg-clip-text text-transparent">Your saved cards</h1>
                         {loading ? (
                             <div>Loading please wait brah :O</div>
                         ) : (
-                        <div className="w-full grid grid-cols-2 grid-rows-2 gap-4">
+                        <div className="w-full grid grid-cols-2 gap-4 overflow-y-auto max-h-[60vh] pr-2">
                             {userCards.map((card, index)=>{
                                 return (
                                     <div key={index} className="border border-gray-600 p-4 rounded-md flex flex-col gap-4">
@@ -153,7 +155,7 @@ function SavedCards(){
                                             }}>{removeLoading[index] ? "Removing" : "Remove"}</button>
                                         </div>
                                         <div>
-                                            <div>Track all flights between <span className="font-bold">{card.beginTime}</span> hrs - <span className="font-bold">{card.endTime}</span> hrs</div>
+                                            <div>Track all flights between <span className="font-bold">{convertTo12Hour(card.beginTime)}</span> - <span className="font-bold">{convertTo12Hour(card.endTime)}</span></div>
                                             <div>on date : <span className="font-bold">{card.departureDate}</span></div>
                                         </div>
                                         <div>
@@ -167,7 +169,7 @@ function SavedCards(){
                                             ) : (
                                                 <div className="flex justify-between">
                                                     <div>Notis are off</div>
-                                                    <div className="flex items-center gap-1 underline text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-all duration-200" onClick={()=>{
+                                                    <div className="flex items-center cursor-pointer gap-1 underline text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-all duration-200" onClick={()=>{
                                                         setIsOpen(true)
                                                         setCardString(card.id)
                                                     }}>

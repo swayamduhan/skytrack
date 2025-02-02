@@ -61,7 +61,7 @@ const childVariants : Variants = {
 
 export function DisplayFlights({ flights, setFlights, setShowCards } : { flights : Flight[], setFlights : any, setShowCards : any}){
     return (
-        <div className="flex flex-col h-full font-satoshi">
+        <div className="flex flex-col h-full font-satoshi text-black dark:text-white">
             <div className="flex-1">
                     {flights.length === 0 ? 
                     <motion.div key="flights-unavailable" className="flex justify-center items-center h-full">FLIGHTS_UNAVAILABLE_FOR_THE_SEARCH</motion.div>
@@ -85,7 +85,7 @@ export function DisplayFlights({ flights, setFlights, setShowCards } : { flights
             </div>
 
             <div className="flex p-2 px-4">
-                <button className="p-2 border rounded-md bg-black font-bold px-4" onClick={()=>{
+                <button className="p-2 border border-black dark:border-white rounded-md bg-white dark:bg-black font-bold px-4" onClick={()=>{
                     setFlights([])
                     setShowCards(true)
                 }}>Clear Flights</button>
@@ -97,7 +97,7 @@ export function DisplayFlights({ flights, setFlights, setShowCards } : { flights
 
 function showStop(stop : boolean){
     return (
-        <div className="text-xs bg-[linear-gradient(45deg,#A9BCF5_9%,#89ABE3_25%,#6D82D1_51%,#5359BF_78%,#3A30A8_100%)] text-black font-bold flex justify-center items-center p-1 px-2 rounded-xl">
+        <div className="text-xs bg-[linear-gradient(45deg,#A9BCF5_9%,#89ABE3_25%,#6D82D1_51%,#5359BF_78%,#3A30A8_100%)] text-black font-bold flex justify-center items-center p-1 px-2 rounded-xl w-[5rem]">
             {stop ? "Has Stops" : "NonStop"}
         </div>
     )

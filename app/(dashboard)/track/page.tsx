@@ -12,9 +12,11 @@ export default async function Track(){
                 <AuthProvider>
                     <Navbar />
                 </AuthProvider>
-                <div className="text-[var(--foreground-dark)] grid grid-cols-2 gap-10 p-2 rounded-md p-20 pt-40">
-                    <InputComponent />
-                    <OutputComponent />
+                <div className="flex min-h-screen max-h-[100vh] justify-center items-center gap-10 px-20 py-40">
+                    <div className="grid grid-cols-2 gap-10 w-full max-w-[1500px]">
+                        <InputComponent />
+                        <OutputComponent />
+                    </div>
                 </div>
             </JotaiProvider>
             <Footer />

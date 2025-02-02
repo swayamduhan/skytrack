@@ -1,7 +1,8 @@
 import { prisma } from "@/prisma/prisma";
-import { Prisma } from "@prisma/client";
 import axios from "axios";
 import { NextResponse } from "next/server";
+
+// send email to user to notify if error in doing routines
 
 export interface FlightCard {
     id: string;
@@ -81,9 +82,10 @@ async function fetchAndMail(card : FlightCard){
         // get minimum price
         let minimumPrice = forexParse(flights[0].price)
         let minimumPriceIndex = 0;
-        console.log(minimumPrice)
+
         for(let i = 1; i < flights.length; i++){
-            const price = forexParse(flights[0].price)
+            if(flights[i].price == "Price unavailable") continue;
+            const price = forexParse(flights[i].price)
             if(price < minimumPrice){
                 minimumPrice = price
                 minimumPriceIndex = i
@@ -162,6 +164,8 @@ export async function GET(){
         // delete all expired cards
         await Promise.all(deleteRequests)
 
+        if(filteredCards.length === 0) return NextResponse.json({ message : "ROUTINE_COMPLETE", at : (new Date()).toISOString() }, { status : 200 })
+
         // run a routine to fetch prices and mail it out
         const searchRoutines : any = []
         filteredCards.forEach((card) => {
@@ -170,7 +174,7 @@ export async function GET(){
 
         await Promise.all(searchRoutines)
         
-        return NextResponse.json({ message : "SUCCESS", filteredCards }, { status : 200 })
+        return NextResponse.json({ message : "ROUTINE_COMPLETE", at : (new Date()).toISOString() }, { status : 200 })
     } catch ( err ) {
         return NextResponse.json({ message : "ERROR_OCCURED", error : err }, { status : 500 })
     }
