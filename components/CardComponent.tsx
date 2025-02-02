@@ -19,20 +19,10 @@ export function CardComponent(){
     const { data : session, status } = useSession()
 
     useEffect(()=>{
+        if(status === "unauthenticated") return
         // @ts-ignore
         fetchUserCards(setUserCards, setLoading, session?.user?.id)
     }, [])
-
-        function convertTo12Hour(timeInput : string) : string{
-        let hrs = Number(timeInput.substring(0,2))
-        const mins = Number(timeInput.substring(2))
-        if(hrs > 12){
-            hrs -= 12;
-            return `${hrs}:${mins} PM`
-        } else {
-            return `${hrs}:${mins} AM`
-        }
-    }
 
     return (
         <div className="w-full h-full py-4 font-satoshi text-black dark:text-white">
