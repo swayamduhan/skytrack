@@ -1,8 +1,8 @@
 ## Todo
 #### Current issue : 
-Deployed on vercel with @sparticuz/chromium-min package with a .tar chromium file being imported from github cdn. this way vercel has to install chromium everytime on a scrape request which takes up time, and hits the 10s request timeout on a free plan.
+Deployed on vercel with `@sparticuz/chromium-min` package with a .tar chromium file being imported from github cdn. this way vercel has to install chromium everytime on a scrape request which takes up time, and hits the 10s request timeout on a free plan.
 #### Possible workarounds : 
-- Try to replicate process using @sparticuz/chromium and storing chromium files in /public and see if it doesn't surpass the bundle size limit or
+- Try to replicate process using `@sparticuz/chromium` and storing chromium files in `/public` and see if it doesn't surpass the bundle size limit or
 - seperate the scraping service to a different backend ( most prolly use Go ) and host it somewhere else, possibly AWS or Google. For the scrape routine that runs every 12 hours, put all requests in a queue and send to that backend one by one to reduce the request time on Next.js backend.
 - Learn advanced docker, queues and Go to build this.
 
