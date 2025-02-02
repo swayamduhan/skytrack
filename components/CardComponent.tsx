@@ -19,10 +19,10 @@ export function CardComponent(){
     const { data : session, status } = useSession()
 
     useEffect(()=>{
-        if(status === "unauthenticated") return
+        if(status === "unauthenticated" || status === "loading") return
         // @ts-ignore
         fetchUserCards(setUserCards, setLoading, session?.user?.id)
-    }, [])
+    }, [status])
 
     return (
         <div className="w-full h-full py-4 font-satoshi text-black dark:text-white">
