@@ -1,6 +1,7 @@
 'use client'
 import { NotificationProps } from "@/app/api/cards/toggle-noti/route";
 import { JotaiProvider } from "@/app/JotaiProvider";
+import { convertTo12Hour } from "@/app/lib/convertTo12";
 import { fetchUserCards } from "@/app/lib/fetchUserCards";
 import { AuthProvider } from "@/app/provider";
 import Footer from "@/components/Footer";
@@ -200,13 +201,3 @@ function SavedCards(){
         )
     }
     
-    function convertTo12Hour(timeInput : string) : string{
-        let hrs = Number(timeInput.substring(0,2))
-        const mins = Number(timeInput.substring(2))
-        if(hrs > 12){
-            hrs -= 12;
-            return `${hrs}:${mins} PM`
-        } else {
-            return `${hrs}:${mins} AM`
-        }
-    }

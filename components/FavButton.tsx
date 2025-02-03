@@ -57,7 +57,7 @@ export function FavButton({ origin, destination, beginTime, endTime, departureDa
             </button>
 
             {isOpen && (
-                <div className="fixed inset-0 dark:bg-black/30 bg-black/10 backdrop-blur-xl flex items-center justify-center">
+                <div className="fixed z-[10] inset-0 dark:bg-black/30 bg-black/10 backdrop-blur-xl flex items-center justify-center">
                     <div className="flex flex-col gap-5 items-center shadow-md bg-[var(--background)] dark:bg-[var(--background-dark)] rounded-md relative dark:text-white text-black overflow-hidden">
                     <div className="absolute top-[-100px] w-full h-full bg-gradient-to-br from-black/30 dark:from-white/30 via-black/5 dark:via-white/5 to-transparent blur-3xl pointer-events-none" />
                         <div className="absolute h-10 w-10 top-0 right-0 flex items-center justify-center cursor-pointer" onClick={()=>setIsOpen(false)}>

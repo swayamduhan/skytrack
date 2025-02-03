@@ -12,6 +12,7 @@ import { MoveRight } from "lucide-react"
 import { RequestData } from "@/app/api/scrape/route"
 import axios from "axios"
 import { toast } from "sonner"
+import { convertTo12Hour } from "@/app/lib/convertTo12"
 
 export function CardComponent(){
     const [userCards, setUserCards] = useAtom(cards)
@@ -93,16 +94,6 @@ const Cards = ({ userCards } : { userCards : FlightCard[]}) => {
             }
         } finally {
             setLoading(false)
-        }
-    }
-    function convertTo12Hour(timeInput : string) : string{
-        let hrs = Number(timeInput.substring(0,2))
-        const mins = Number(timeInput.substring(2))
-        if(hrs > 12){
-            hrs -= 12;
-            return `${hrs}:${mins} PM`
-        } else {
-            return `${hrs}:${mins} AM`
         }
     }
 
