@@ -12,6 +12,7 @@ paused scraping requests from frontend until bug gets fixed. find "remove after 
 - complete forgot password functionality
 - add loading buttons on auth
 - add page transitions
+- add tanstack react query to handle card component on /track
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
