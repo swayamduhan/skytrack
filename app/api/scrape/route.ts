@@ -1,5 +1,5 @@
 import puppeteer from "puppeteer-core"
-import chromium from "@sparticuz/chromium-min"
+import chromium from "@sparticuz/chromium"
 import { NextRequest, NextResponse } from "next/server";
 
 export interface RequestData {
@@ -32,7 +32,7 @@ export async function POST(req : NextRequest){
         const browser = await puppeteer.launch({
             args : chromium.args,
             defaultViewport : chromium.defaultViewport,
-            executablePath : await chromium.executablePath('https://github.com/Sparticuz/chromium/releases/download/v132.0.0/chromium-v132.0.0-pack.tar'),
+            executablePath : await chromium.executablePath(),
             headless : true,
         });
         console.log("Browser initiated!")

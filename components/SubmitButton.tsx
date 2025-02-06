@@ -38,9 +38,6 @@ export function Button({ from, to, startTime, endTime, departureDate, checked } 
 
 
 async function handleSubmit(from : string, to : string, startTime : Date, endTime : Date, departureDate : Date, nonStop : boolean, setOutput : any, setLoading : any, setShowUserCards : any){
-    // remove after fix
-    toast.error("Undergoing a bug fix, Hang on :(")
-    return
 
     const startString = makeTimeString(startTime)
     const endString = makeTimeString(endTime)

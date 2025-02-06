@@ -63,9 +63,6 @@ const Cards = ({ userCards } : { userCards : FlightCard[]}) => {
     const setShowUserCards = useSetAtom(showCards)
 
     async function handleSearch(origin : string, destination : string, beginTime : string, endTime : string, departureDate : string, nonStop : boolean){
-        // remove after fix
-        toast.error("Undergoing a bug fix. Hang on :(")
-        return
 
         const requestBody : RequestData = {
             origin,

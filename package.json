@@ -7,13 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate",
     "vercel-build": "prisma generate && prisma migrate deploy && next build"
   },
   "dependencies": {
     "@prisma/client": "^6.1.0",
     "@radix-ui/react-toast": "^1.2.4",
-    "@sparticuz/chromium-min": "^132.0.0",
+    "@sparticuz/chromium": "^132.0.0",
     "@types/nodemailer": "^6.4.17",
     "axios": "^1.7.9",
     "bcrypt": "^5.1.1",
