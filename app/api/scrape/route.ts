@@ -30,7 +30,19 @@ export async function POST(req : NextRequest){
     try{
         console.log("Request received...")
         const browser = await puppeteer.launch({
-            args : chromium.args,
+            args: [
+                '--disable-gpu',
+                '--disable-software-rasterizer',
+                '--disable-extensions',
+                '--disable-images',
+                '--no-sandbox',
+                '--disable-background-networking',
+                '--disable-flash',
+                '--disable-webgl',
+                '--disable-site-isolation-trials',
+                '--js-flags="--max-old-space-size=512"',
+                '--window-size=1280x720'
+            ],
             defaultViewport : chromium.defaultViewport,
             executablePath : await chromium.executablePath(),
             headless : true,
