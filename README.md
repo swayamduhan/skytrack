@@ -1,5 +1,5 @@
 # Introduction
-deployed at [Skytrack](https://www.skytrack.onrender.com)
+deployed at [Skytrack](https://skytrack.onrender.com/)
 - Use this app to track flights and notify about price drops via mail.
 - stack used => Next.js, Puppeteer with @sparticuz/chromium for scraping, Docker, SQL with Prisma 
 
