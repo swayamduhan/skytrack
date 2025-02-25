@@ -11,6 +11,7 @@ export interface RequestData {
     beginTime : string;
     endTime : string;
     nonStop : boolean;
+    currency : string;
 }
 
 export interface Flight {

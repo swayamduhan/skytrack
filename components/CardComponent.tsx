@@ -64,11 +64,12 @@ const Cards = ({ userCards } : { userCards : FlightCard[]}) => {
     const [loading, setLoading] = useAtom(loadingResults)
     const setShowUserCards = useSetAtom(showCards)
 
-    async function handleSearch(origin : string, destination : string, beginTime : string, endTime : string, departureDate : string, nonStop : boolean, currency : string){
+    async function handleSearch(origin : string, destination : string, beginTime : string, endTime : string, departureDate : string, nonStop : boolean){
 
         try{
             setLoading(true)
             setShowUserCards(false)
+            const currency = await getUserCurrency()
             const requestBody : RequestData = {
                 origin,
                 destination,
@@ -116,7 +117,7 @@ const Cards = ({ userCards } : { userCards : FlightCard[]}) => {
                     <div className="text-gray-700 dark:text-gray-300 text-sm"> 
                         Tracking from <span className="text-black dark:text-white font-bold">{convertTo12Hour(card.beginTime)}</span> to <span className="text-black dark:text-white font-bold">{convertTo12Hour(card.endTime)}</span><br></br>on <span className="text-black dark:text-white font-bold">{card.departureDate}</span><br></br>Notifications : <span className="font-bold dark:text-white text-black">{card.notify ? "ON" : "OFF"}</span>
                     </div>
-                    <button className={`absolute bottom-0 right-0 m-2 border p-1 rounded-md px-2 text-sm bg-black text-white dark:bg-white dark:text-black font-bold ${loading ? "pointer-events-none" : ""}`} onClick={()=>handleSearch(card.origin, card.destination, card.beginTime, card.endTime, card.departureDate, card.nonStop, card.currency)}>Search</button>
+                    <button className={`absolute bottom-0 right-0 m-2 border p-1 rounded-md px-2 text-sm bg-black text-white dark:bg-white dark:text-black font-bold ${loading ? "pointer-events-none" : ""}`} onClick={()=>handleSearch(card.origin, card.destination, card.beginTime, card.endTime, card.departureDate, card.nonStop)}>Search</button>
                 </div>
             ))}
         </div>

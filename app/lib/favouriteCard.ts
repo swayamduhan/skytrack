@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toast } from "sonner";
 
-export const favouriteCard = async (userId : number, origin : string, destination : string, beginTime : string, endTime : string, departureDate : string, nonStop : boolean, setFavLoading : any, notify: boolean, threshold : number) => {
+export const favouriteCard = async (userId : number, origin : string, destination : string, beginTime : string, endTime : string, departureDate : string, nonStop : boolean, setFavLoading : any, notify: boolean, threshold : number, currency : string) => {
     setFavLoading(true)
     try{
         const reqBody = {
@@ -13,10 +13,10 @@ export const favouriteCard = async (userId : number, origin : string, destinatio
             endTime,
             departureDate,
             nonStop,
+            currency,
             notify,
             threshold
         }
-        console.log(reqBody)
         await axios.post("/api/cards/create", reqBody)
     } catch(error : any) {
         if (error.response) {

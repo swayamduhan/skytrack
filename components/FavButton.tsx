@@ -7,6 +7,7 @@ import { ArrowSVG } from "./Arrow";
 import { useAtomValue } from "jotai";
 import { darkMode } from "@/store/atoms";
 import { Checkbox } from "./CustomCheckbox";
+import { getUserCurrency } from "@/app/lib/getcurrency";
 
 
 interface FavButtonProps {
@@ -31,8 +32,9 @@ export function FavButton({ origin, destination, beginTime, endTime, departureDa
             toast.error("Please enter your discount requirement :)")
             return
         }
+        const currency = getUserCurrency()
         //@ts-ignore
-        await favouriteCard(session?.user?.id, origin, destination, beginTime, endTime, departureDate, nonStop, setFavLoading, checked, threshold)
+        await favouriteCard(session?.user?.id, origin, destination, beginTime, endTime, departureDate, nonStop, setFavLoading, checked, threshold, currency)
         toast.success("Flight saved successfully!")
         setIsOpen(false)
     }

@@ -177,6 +177,11 @@ export async function POST(req : NextRequest){
             relevantFlights = relevantFlights.filter(x => x.stop === false)
         }
 
+        if ( currency_rates.size === 0 ) {
+            await setCurrencyRates()
+        }
+
+
         let id = 1;
         relevantFlights.forEach(x => {
             x.id = id++;
@@ -199,8 +204,4 @@ async function setCurrencyRates(){
     for ( let key in exchangeRates ) {
         currency_rates.set(key, exchangeRates[key])
     } 
-
-    currency_rates.forEach((key, value) => {
-        console.log(key, value)
-    })
 }

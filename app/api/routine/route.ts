@@ -42,6 +42,7 @@ interface MailProps {
     time : string;
     threshold : number | null;
     price : string;
+    currency : string;
 }
 
 
@@ -130,7 +131,8 @@ async function fetchAndMail(card : FlightCard){
                 date : card.departureDate,
                 time : flights[minimumPriceIndex].beginTime,
                 threshold : card.threshold,
-                price : flights[minimumPriceIndex].price
+                price : flights[minimumPriceIndex].price,
+                currency : card.currency
             }
         } else {
             console.log("NOT AVAILABLE AT DISCOUNT")
@@ -208,8 +210,4 @@ async function setCurrencyRates(){
     for ( let key in exchangeRates ) {
         currency_rates.set(key, exchangeRates[key])
     } 
-
-    currency_rates.forEach((key, value) => {
-        console.log(key, value)
-    })
 }
