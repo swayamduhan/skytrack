@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation"
 import { DarkModeButton } from "./DarkModeButton"
 import { useAtomValue } from "jotai"
 import { darkMode } from "@/store/atoms"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Drawer } from "./Drawer"
 import Image from "next/image"
+import { Sidebar } from "./Sidebar"
 
 export default function Navbar(){
     const { data : session, status } = useSession()
@@ -15,6 +16,14 @@ export default function Navbar(){
     const isDark = useAtomValue(darkMode)
     const [drawerOpen, setDrawerOpen] = useState(false)
     const [hoverIndex, setHoverIndex] = useState<number>(-1)
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+    useEffect(() => {
+      const handleResize = () => setIsMobile(window.innerWidth < 768);
+      window.addEventListener("resize", handleResize);
+      
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
 
     async function handleAuth(){
@@ -50,14 +59,20 @@ export default function Navbar(){
                     <Plane fill={isDark ? "white" : "black"} color={isDark ? "white" : "black"}/>
                     sky<span className="text-black/60 dark:text-white/60">track</span>
                 </div>
+                {isMobile ? (
+                    <>
+                        <Sidebar status={status} handleAuth={handleAuth} handleCards={handleCards} setDrawerOpen={setDrawerOpen}/>
+                    </>
+                ) : (
                 <div className="flex gap-10 text-lg dark:text-white/65 tracking-[4px] font-mono">
-                    <div className={`cursor-pointer ${hoverIndex != -1 && hoverIndex != 0 ? "blur-[3px]" : ""} transition-all duration-300`} onMouseOver={()=>setHoverIndex(0)} onMouseLeave={()=>setHoverIndex(-1)} onClick={()=>setDrawerOpen(true)}>/ contact</div>
+                    <div className={`cursor-pointer ${hoverIndex != -1 && hoverIndex != 0 ? "blur-[3px]" : ""} transition-all duration-300`} onMouseOver={()=>setHoverIndex(0)} onMouseLeave={()=>setHoverIndex(-1)} onClick={()=>setDrawerOpen(prev => !prev)}>/ contact</div>
                     <div className={`cursor-pointer ${hoverIndex != -1 && hoverIndex != 1 ? "blur-[3px]" : ""} transition-all duration-300`} onMouseOver={()=>setHoverIndex(1)} onMouseLeave={()=>setHoverIndex(-1)} onClick={handleAuth}>/ {status === "authenticated" ? "logout" : "login"}</div>
                     <div className={`cursor-pointer ${hoverIndex != -1 && hoverIndex != 2 ? "blur-[3px]" : ""} transition-all duration-300`} onMouseOver={()=>setHoverIndex(2)} onMouseLeave={()=>setHoverIndex(-1)}>
                         <DarkModeButton />
                     </div>
                     {status === "authenticated" && <div className={`cursor-pointer ${hoverIndex != -1 && hoverIndex != 3 ? "blur-[3px]" : ""} transition-all duration-300`} onMouseOver={()=>setHoverIndex(3)} onMouseLeave={()=>setHoverIndex(-1)} onClick={handleCards}>/ saved</div>}
                 </div>
+                )}
             </div>
 
             {/* Drawer for contact */}

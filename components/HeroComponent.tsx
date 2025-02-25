@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 export default function HeroComponent() {
   const router = useRouter()
     return (
-      <div className="backdrop-blur-md p-16 rounded-2xl flex flex-col items-center m-3 gap-14 lg:w-1/2 shadow-2xl">
+      <div className="backdrop-blur-md p-16 rounded-2xl flex flex-col lg:w-1/2 lg:max-w-[800px] items-center m-3 gap-14 shadow-2xl">
         <div className="max-w-full font-satoshi font-black text-5xl flex flex-col gap-4">
           <span>
             <motion.span initial={{opacity : 0, top : "10px"}} animate={{opacity:1, top : "0px"}} transition={{duration : 0.5}} className="relative">
