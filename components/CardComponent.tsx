@@ -13,6 +13,8 @@ import { RequestData } from "@/app/api/scrape/route"
 import axios from "axios"
 import { toast } from "sonner"
 import { convertTo12Hour } from "@/app/lib/convertTo12"
+import { getScrapeRoute } from "@/app/lib/scraperoute"
+import { getUserCurrency } from "@/app/lib/getcurrency"
 
 export function CardComponent(){
     const [userCards, setUserCards] = useAtom(cards)
@@ -62,20 +64,22 @@ const Cards = ({ userCards } : { userCards : FlightCard[]}) => {
     const [loading, setLoading] = useAtom(loadingResults)
     const setShowUserCards = useSetAtom(showCards)
 
-    async function handleSearch(origin : string, destination : string, beginTime : string, endTime : string, departureDate : string, nonStop : boolean){
+    async function handleSearch(origin : string, destination : string, beginTime : string, endTime : string, departureDate : string, nonStop : boolean, currency : string){
 
-        const requestBody : RequestData = {
-            origin,
-            destination,
-            beginTime,
-            endTime,
-            departureDate,
-            nonStop
-        }
         try{
             setLoading(true)
             setShowUserCards(false)
-            const response = await axios.post('/api/scrape', requestBody)
+            const requestBody : RequestData = {
+                origin,
+                destination,
+                beginTime,
+                endTime,
+                departureDate,
+                nonStop,
+                currency
+            }
+            const scrapeRoute = getScrapeRoute()
+            const response = await axios.post(`/api/${scrapeRoute}`, requestBody)
             setOutput(response.data.flights)
         } catch (error : any) {
             if (error.response) {
@@ -112,7 +116,7 @@ const Cards = ({ userCards } : { userCards : FlightCard[]}) => {
                     <div className="text-gray-700 dark:text-gray-300 text-sm"> 
                         Tracking from <span className="text-black dark:text-white font-bold">{convertTo12Hour(card.beginTime)}</span> to <span className="text-black dark:text-white font-bold">{convertTo12Hour(card.endTime)}</span><br></br>on <span className="text-black dark:text-white font-bold">{card.departureDate}</span><br></br>Notifications : <span className="font-bold dark:text-white text-black">{card.notify ? "ON" : "OFF"}</span>
                     </div>
-                    <button className={`absolute bottom-0 right-0 m-2 border p-1 rounded-md px-2 text-sm bg-black text-white dark:bg-white dark:text-black font-bold ${loading ? "pointer-events-none" : ""}`} onClick={()=>handleSearch(card.origin, card.destination, card.beginTime, card.endTime, card.departureDate, card.nonStop)}>Search</button>
+                    <button className={`absolute bottom-0 right-0 m-2 border p-1 rounded-md px-2 text-sm bg-black text-white dark:bg-white dark:text-black font-bold ${loading ? "pointer-events-none" : ""}`} onClick={()=>handleSearch(card.origin, card.destination, card.beginTime, card.endTime, card.departureDate, card.nonStop, card.currency)}>Search</button>
                 </div>
             ))}
         </div>
