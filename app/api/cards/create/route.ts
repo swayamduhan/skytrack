@@ -16,7 +16,6 @@ interface createCardProps {
 
 export async function POST(req : NextRequest){
     const { userId, origin, destination, beginTime, endTime, departureDate, nonStop, currency, notify, threshold } : createCardProps = await req.json()
-
     if(!userId){
         return NextResponse.json({ message : "USER_NOT_LOGGED_IN"}, { status : 400 })
     }
@@ -62,6 +61,6 @@ export async function POST(req : NextRequest){
         return NextResponse.json({ message : "Card created successfully!" }, { status : 200 })
 
     } catch (err) {
-        return NextResponse.json({ message : "Internal Server Error"}, { status : 500 })
+        return NextResponse.json({ message : "Internal Server Error", error : err }, { status : 500 })
     }
 }

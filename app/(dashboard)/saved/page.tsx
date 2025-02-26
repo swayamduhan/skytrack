@@ -46,7 +46,7 @@ function SavedCards(){
         
         // @ts-ignore
         fetchUserCards(setUserCards, setLoading, session?.user?.id)
-    }, [status, render])
+    }, [session?.user, status, render])
     
     async function handleDeleteCard(cardId : string, index : number){
         setRemoveLoading(prev => ({...prev, [index] : true}))
@@ -129,7 +129,7 @@ function SavedCards(){
                         {loading ? (
                             <div>Loading please wait brah :O</div>
                         ) : (
-                            <div className="w-full grid grid-cols-2 gap-4 overflow-y-auto max-h-[60vh] pr-2">
+                            <div className="w-full grid sm:grid-cols-2 gap-4 overflow-y-auto max-h-[60vh] pr-2">
                             {userCards.map((card, index)=>{
                                 return (
                                     <div key={index} className="border border-gray-600 p-4 rounded-md flex flex-col gap-4">

@@ -5,8 +5,6 @@ import { cards, darkMode, flightResult, loadingResults, showCards } from "@/stor
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
-import arrow from "@/public/arrow.svg"
-import { ArrowSVG } from "./Arrow"
 import { FlightCard } from "@/app/api/routine/route"
 import { MoveRight } from "lucide-react"
 import { RequestData } from "@/app/api/scrape/route"
@@ -23,9 +21,9 @@ export function CardComponent(){
 
     useEffect(()=>{
         if(status === "unauthenticated" || status === "loading") return
-        // @ts-ignore
+        // @ts-expect-error
         fetchUserCards(setUserCards, setLoading, session?.user?.id)
-    }, [status])
+    }, [status, session?.user])
 
     return (
         <div className="w-full h-full py-4 font-satoshi text-black dark:text-white">
@@ -50,7 +48,7 @@ export function CardComponent(){
 export const CenteredText = ({children} : { children : any}) => {
     return (
         <div className="h-full flex justify-center items-center text-black dark:text-white">
-            <p className="text-2xl p-48 font-bold">
+            <p className="text-2xl p-20 md:p-48 font-bold">
                 {children}
             </p>
         </div>

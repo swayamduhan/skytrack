@@ -1,9 +1,6 @@
 import { Flight } from "@/app/api/scrape/route";
-import { flightResult, showCards } from "@/store/atoms";
-import { useSetAtom } from "jotai";
 import { Clock } from "lucide-react";
-import { AnimatePresence, motion, Variants } from "motion/react";
-import { useState } from "react";
+import { motion, Variants } from "motion/react";
 
 const containerVariants : Variants = {
     hidden : {
@@ -61,16 +58,16 @@ const childVariants : Variants = {
 
 export function DisplayFlights({ flights, setFlights, setShowCards } : { flights : Flight[], setFlights : any, setShowCards : any}){
     return (
-        <div className="flex flex-col h-full font-satoshi text-black dark:text-white">
+        <div id="flights" className="flex flex-col h-full font-satoshi text-black dark:text-white">
             <div className="flex-1">
                     {flights.length === 0 ? 
                     <motion.div key="flights-unavailable" className="flex justify-center items-center h-full">FLIGHTS_UNAVAILABLE_FOR_THE_SEARCH</motion.div>
                     : 
                     <motion.div key="flights" className="flex flex-col gap-4 p-4 max-h-[540px] overflow-y-auto" variants={containerVariants} initial="hidden" animate="visible" exit="exit">
                         {flights.map(flight => {
-                            return <motion.div variants={childVariants} key={flight.id} className="relative border flex justify-between items-center p-6 rounded-md bg-white/5 shadow-xl">
+                            return <motion.div variants={childVariants} key={flight.id} className="text-sm sm:text-md relative border flex justify-between items-center p-6 rounded-md bg-white/5 shadow-xl">
                                 <div className="flex flex-col">
-                                    <div className="text-xl font-bold">{flight.airline}</div>
+                                    <div className="text-lg sm:text-xl font-bold">{flight.airline}</div>
                                     {showStop(flight.stop)}
                                 </div>
                                 <div className="font-bold flex items-center gap-1">

@@ -16,9 +16,10 @@ export default function Navbar(){
     const isDark = useAtomValue(darkMode)
     const [drawerOpen, setDrawerOpen] = useState(false)
     const [hoverIndex, setHoverIndex] = useState<number>(-1)
-    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+    const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
+      setIsMobile(window.innerWidth < 768)
       const handleResize = () => setIsMobile(window.innerWidth < 768);
       window.addEventListener("resize", handleResize);
       

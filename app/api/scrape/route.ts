@@ -201,7 +201,7 @@ export async function POST(req : NextRequest){
 
 async function setCurrencyRates(){
     const exchangeRates = await getExchangeRates()
-    for ( let key in exchangeRates ) {
+    for ( const key in exchangeRates ) {
         currency_rates.set(key, exchangeRates[key])
     } 
 }

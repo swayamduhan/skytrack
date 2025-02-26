@@ -7,8 +7,6 @@ import { AnimatePresence, motion, Variants } from "motion/react"
 import { CardComponent, CenteredText } from "./CardComponent"
 import { SessionProvider } from "next-auth/react"
 import { useState } from "react"
-import { ArrowSVG } from "./Arrow"
-import { X } from "lucide-react"
 
 const containerVariants: Variants = {
   hidden: {
@@ -29,11 +27,9 @@ export function OutputComponent() {
   const [output, setOutput] = useAtom(flightResult)
   const [showUserCards, setShowUserCards] = useAtom(showCards)
   const loading = useAtomValue(loadingResults)
-  const [open, isOpen] = useState(true)
-  const isDark = useAtomValue(darkMode)
 
   return (
-    <div className="bg-black/5 dark:bg-white/10 rounded-md">
+    <div className="bg-black/5 dark:bg-white/10 rounded-md" id="output">
       <AnimatePresence mode="wait">
         {loading ? (
           <div key="loading-flights">

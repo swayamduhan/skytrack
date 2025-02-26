@@ -129,7 +129,7 @@ export default function Signup(){
     return (
         <div>
             {otpSent ? 
-            <div className="backdrop-blur-2xl rounded-lg p-10 px-20 font-satoshi flex flex-col items-center gap-6">
+            <div className="backdrop-blur-2xl rounded-lg m-4 p-6 md:p-10 px-8 md:px-20 font-satoshi flex flex-col items-center gap-8 shadow-lg">
                 <div className="text-5xl font-bold bg-gradient-to-b from-gray-800 dark:from-white to-gray-400 bg-clip-text text-transparent p-5">Verify Mail</div>
                 <OtpCard length={length} otp={otp} setOtp={setOtp}/>
                 {otpTimer > 0 ? <div className="text-gray-300 group">Please wait <span className="text-lg text-white">{otpTimer}</span> seconds to resend OTP.</div> : <button className="underline text-gray-300 hover:text-white transition-all duration-200" onClick={handleResendOtp}>Resend OTP</button>}
@@ -139,8 +139,8 @@ export default function Signup(){
                 </div>
             </div>
             :
-            <div className="backdrop-blur-2xl rounded-lg p-10 px-10 font-satoshi flex flex-col items-center gap-6">
-                <div className="text-5xl font-bold bg-gradient-to-b from-gray-800 dark:from-white to-gray-400 bg-clip-text text-transparent p-5">SignUp Here</div>
+            <div className="backdrop-blur-2xl rounded-lg m-4 p-6 md:p-10 px-8 md:px-20 font-satoshi flex flex-col items-center gap-8 shadow-lg">
+                <div className="text-5xl font-bold bg-gradient-to-b from-gray-800 dark:from-white to-gray-400 bg-clip-text text-transparent py-4">SignUp Here</div>
                 <InputBox state={name} setState={setName} placeholder="Swayam Duhan" label="Name"/>
                 <InputBox state={email} setState={setEmail} placeholder="workplace.swayam@gmail.com" label="Email"/>
                 <InputBox state={password} setState={setPassword} placeholder="@123#mysecretpass" label="Password" type="password"/>

@@ -8,6 +8,6 @@ export async function POST(req : NextRequest){
         const userCards = await prisma.flightCard.findMany({ where : { userId }})
         return NextResponse.json({ message : "Cards fetched successfully!", cards : userCards }, { status : 200 })
     } catch(err) {
-        return NextResponse.json({ message : "Failed to fetch cards!"}, { status : 500 })
+        return NextResponse.json({ message : "Failed to fetch cards!", error : err }, { status : 500 })
     }
 }

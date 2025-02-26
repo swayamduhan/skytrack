@@ -87,7 +87,7 @@ async function fetchAndMail(card : FlightCard){
             return
         }
 
-        // @ts-ignore already checked if threshold is present when putting in filteredCards
+        // @ts-expect-error already checked if threshold is present when putting in filteredCards
         const optimisedThreshold = parseInt(card.threshold * 1.1)
 
         // get minimum price
@@ -141,7 +141,7 @@ async function fetchAndMail(card : FlightCard){
 
         // mail price and discount to user
         console.log("Sending email to user ....")
-        // @ts-ignore
+        // @ts-expect-error
         if(minimumPrice < card.threshold){
             reqBody.type = "FLIGHT_DROP"
             await axios.post(`${process.env.NEXTAUTH_URL}api/mail`, reqBody)
@@ -207,7 +207,7 @@ export async function GET(){
 
 async function setCurrencyRates(){
     const exchangeRates = await getExchangeRates()
-    for ( let key in exchangeRates ) {
+    for ( const key in exchangeRates ) {
         currency_rates.set(key, exchangeRates[key])
     } 
 }

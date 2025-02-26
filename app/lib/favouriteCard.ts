@@ -5,7 +5,6 @@ export const favouriteCard = async (userId : number, origin : string, destinatio
     setFavLoading(true)
     try{
         const reqBody = {
-            // @ts-ignore
             userId,
             origin,
             destination,
@@ -17,6 +16,7 @@ export const favouriteCard = async (userId : number, origin : string, destinatio
             notify,
             threshold
         }
+        console.log("received request for : ", reqBody)
         await axios.post("/api/cards/create", reqBody)
     } catch(error : any) {
         if (error.response) {

@@ -44,13 +44,13 @@ export const NEXT_AUTH_CONFIG : NextAuthOptions = {
         signIn : '/auth/signin'
     },
     callbacks : {
-        async session({ session, token, user } : any) {
+        async session({ session, token } : any) {
             if(session.user){
                 session.user.id = token.id
             }
             return session
         },
-        async jwt({ token, user, account, profile, isNewUser } : any) {
+        async jwt({ token, user } : any) {
             if(user){
                 token.id = user.id
                 token.email = user.email

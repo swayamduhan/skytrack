@@ -32,7 +32,7 @@ export async function POST(req : NextRequest){
 
     try{
         console.log("Request received...")
-        const browser = await puppeteer.launch({ headless : false, defaultViewport : {height : 1920, width : 1080} });
+        const browser = await puppeteer.launch({ headless : true, defaultViewport : {height : 1920, width : 1080} });
         console.log("Browser initiated!")
 
         const page = await browser.newPage()

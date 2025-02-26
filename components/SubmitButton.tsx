@@ -41,9 +41,14 @@ export function Button({ from, to, startTime, endTime, departureDate, checked } 
 
 async function handleSubmit(from : string, to : string, startTime : Date, endTime : Date, departureDate : Date, nonStop : boolean, setOutput : any, setLoading : any, setShowUserCards : any){
 
+    if (!from || !to ){
+        toast.error("Enter origin and destination!")
+        return
+    }
     const startString = makeTimeString(startTime)
     const endString = makeTimeString(endTime)
     const dateString = departureDate.toDateString()
+
     
     try{
         setLoading(true)
@@ -59,6 +64,7 @@ async function handleSubmit(from : string, to : string, startTime : Date, endTim
             nonStop,
             currency
         }
+        scrollToFlights()
         const response = await axios.post(`/api/${scrapeRoute}`, requestBody)
         setLoading(false)
         setOutput(response.data.flights)
@@ -79,3 +85,9 @@ async function handleSubmit(from : string, to : string, startTime : Date, endTim
 }
 
 
+
+
+function scrollToFlights(){
+    const el = document.getElementById("output")
+    el?.scrollIntoView({ behavior : "smooth" })
+}

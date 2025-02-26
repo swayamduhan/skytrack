@@ -1,4 +1,3 @@
-import { X } from "lucide-react";
 import { AnimatePresence, Variants } from "motion/react";
 import { motion } from "motion/react";
 
@@ -42,7 +41,7 @@ export function Drawer({ children,  drawerOpen, setDrawerOpen } : { children : a
         <AnimatePresence>
             {drawerOpen && (
                 <motion.div className="fixed z-[12] inset-0 bg-black/20 dark:bg-black/50" onClick={()=>setDrawerOpen(false)} variants={backdropVariants} initial="closed" animate="open" exit="closed">
-                    <motion.div className="absolute z-[13] w-full min-h-[300px] max-h-[50vh] bg-white dark:bg-[var(--background-dark)] rounded-t-[50px] px-16 py-10" onClick={(e) => e.stopPropagation()} variants={drawerVariants}>
+                    <motion.div className="absolute z-[13] w-full min-h-[300px] max-h-[70vh] lg:max-h-[50vh] overflow-y-auto overflow-x-hidden bg-white dark:bg-[var(--background-dark)] rounded-t-[50px] px-6 xl:px-16 py-10" onClick={(e) => e.stopPropagation()} variants={drawerVariants}>
                         {children} 
                     </motion.div>
                 </motion.div>

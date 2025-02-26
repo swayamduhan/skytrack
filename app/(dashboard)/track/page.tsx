@@ -7,13 +7,13 @@ import { OutputComponent } from "@/components/OutputComponent"
 
 export default async function Track(){
     return (
-        <div className="dark:bg-[var(--background-dark)] min-h-screen inset-0 relative">
+        <div className="dark:bg-[var(--background-dark)] min-h-screen overflow-hidden inset-0 relative">
             <JotaiProvider>
                 <AuthProvider>
                     <Navbar />
                 </AuthProvider>
-                <div className="flex min-h-screen max-h-[100vh] justify-center items-center gap-10 px-20 py-40">
-                    <div className="grid grid-cols-2 gap-10 w-full max-w-[1500px]">
+                <div className="flex min-h-screen xl:max-h-[100vh] justify-center items-center gap-10 xl:px-20 py-28 sm:py-40">
+                    <div className="grid xl:grid-cols-2 gap-10 w-full max-w-[100vw] lg:max-w-[1500px] p-2">
                         <InputComponent />
                         <OutputComponent />
                     </div>
