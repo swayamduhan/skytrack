@@ -1,6 +1,6 @@
 export function convertTo12Hour(timeInput : string) : string{
     let hrs = Number(timeInput.substring(0,2))
-    let mins = Number(timeInput.substring(2))
+    const mins = Number(timeInput.substring(2))
     let hrsString, minsString
     let period;
     if(hrs > 12){

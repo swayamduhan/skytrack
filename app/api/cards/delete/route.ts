@@ -18,13 +18,13 @@ export async function POST(req : NextRequest){
         if(!card){
             return NextResponse.json({ message : "CARD_NOT_EXIST"} , { status : 400 })
         }
-        // @ts-ignore
+        // @ts-expect-error
         if(card.userId != session.user.id) {
             return NextResponse.json({ message : "UNAUTHORIZED"}, { status : 400 })
         }
         await prisma.flightCard.delete({ where : { id : cardId }})
         return NextResponse.json({ message : "Card deleted!" }, { status : 200 })
     } catch (err) {
-        return NextResponse.json({ message : "Unable to delete card!"}, { status : 500 })
+        return NextResponse.json({ message : "Unable to delete card!", error : err }, { status : 500 })
     }
 }

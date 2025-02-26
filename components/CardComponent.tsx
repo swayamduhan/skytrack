@@ -5,14 +5,14 @@ import { cards, darkMode, flightResult, loadingResults, showCards } from "@/stor
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
-import arrow from "@/public/arrow.svg"
-import { ArrowSVG } from "./Arrow"
 import { FlightCard } from "@/app/api/routine/route"
 import { MoveRight } from "lucide-react"
 import { RequestData } from "@/app/api/scrape/route"
 import axios from "axios"
 import { toast } from "sonner"
 import { convertTo12Hour } from "@/app/lib/convertTo12"
+import { getScrapeRoute } from "@/app/lib/scraperoute"
+import { getUserCurrency } from "@/app/lib/getcurrency"
 
 export function CardComponent(){
     const [userCards, setUserCards] = useAtom(cards)
@@ -21,9 +21,9 @@ export function CardComponent(){
 
     useEffect(()=>{
         if(status === "unauthenticated" || status === "loading") return
-        // @ts-ignore
+        // @ts-expect-error
         fetchUserCards(setUserCards, setLoading, session?.user?.id)
-    }, [status])
+    }, [status, session?.user])
 
     return (
         <div className="w-full h-full py-4 font-satoshi text-black dark:text-white">
@@ -48,7 +48,7 @@ export function CardComponent(){
 export const CenteredText = ({children} : { children : any}) => {
     return (
         <div className="h-full flex justify-center items-center text-black dark:text-white">
-            <p className="text-2xl p-48 font-bold">
+            <p className="text-2xl p-20 md:p-48 font-bold">
                 {children}
             </p>
         </div>
@@ -64,18 +64,21 @@ const Cards = ({ userCards } : { userCards : FlightCard[]}) => {
 
     async function handleSearch(origin : string, destination : string, beginTime : string, endTime : string, departureDate : string, nonStop : boolean){
 
-        const requestBody : RequestData = {
-            origin,
-            destination,
-            beginTime,
-            endTime,
-            departureDate,
-            nonStop
-        }
         try{
             setLoading(true)
             setShowUserCards(false)
-            const response = await axios.post('/api/scrape', requestBody)
+            const currency = await getUserCurrency()
+            const requestBody : RequestData = {
+                origin,
+                destination,
+                beginTime,
+                endTime,
+                departureDate,
+                nonStop,
+                currency
+            }
+            const scrapeRoute = getScrapeRoute()
+            const response = await axios.post(`/api/${scrapeRoute}`, requestBody)
             setOutput(response.data.flights)
         } catch (error : any) {
             if (error.response) {

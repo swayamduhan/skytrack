@@ -24,12 +24,13 @@ export default function Signin(){
             }
         } catch(error) {
             toast.error("Unable to process at the moment :(")
+            console.log(error)
         }
     }
 
     return (
-        <div className="backdrop-blur-2xl rounded-lg p-10 px-20 font-satoshi flex flex-col items-center gap-8 shadow-lg">
-            <div className="text-5xl font-bold bg-gradient-to-b from-gray-800 dark:from-white to-gray-400 bg-clip-text text-transparent p-5">SignIn Here</div>
+        <div className="backdrop-blur-2xl rounded-lg m-4 p-6 md:p-10 px-8 md:px-20 font-satoshi flex flex-col items-center gap-8 shadow-lg">
+            <div className="text-5xl font-bold bg-gradient-to-b from-gray-800 dark:from-white to-gray-400 bg-clip-text text-transparent py-4">SignIn Here</div>
             <InputBox state={email} setState={setEmail} placeholder="Enter Email" label="Email"/>
             <InputBox state={password} setState={setPassword} placeholder="Enter Password" label="Password"/>
             

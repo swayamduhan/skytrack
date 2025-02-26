@@ -1,12 +1,13 @@
 import { favouriteCard } from "@/app/lib/favouriteCard";
 import { Star, X } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ArrowSVG } from "./Arrow";
 import { useAtomValue } from "jotai";
 import { darkMode } from "@/store/atoms";
 import { Checkbox } from "./CustomCheckbox";
+import { getUserCurrency } from "@/app/lib/getcurrency";
 
 
 interface FavButtonProps {
@@ -26,15 +27,27 @@ export function FavButton({ origin, destination, beginTime, endTime, departureDa
     const [threshold, setThreshold] = useState(-1)
     const { data : session, status } = useSession()
 
+    useEffect(()=>{
+        setThreshold(-1)
+        setChecked(false)
+    }, [isOpen])
+
     async function handleClick(){
         if(checked && threshold == 0){
             toast.error("Please enter your discount requirement :)")
             return
         }
-        //@ts-ignore
-        await favouriteCard(session?.user?.id, origin, destination, beginTime, endTime, departureDate, nonStop, setFavLoading, checked, threshold)
-        toast.success("Flight saved successfully!")
-        setIsOpen(false)
+        try {
+            const currency = await getUserCurrency()
+            // @ts-expect-error
+            await favouriteCard(session?.user?.id, origin, destination, beginTime, endTime, departureDate, nonStop, setFavLoading, checked, threshold, currency)
+            toast.success("Flight saved successfully!")
+        } catch (err) {
+            toast.error("Error saving card!")
+            console.log(err)
+        } finally {
+            setIsOpen(false)
+        }
     }
 
     function handleFavorite(){

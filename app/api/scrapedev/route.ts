@@ -1,7 +1,8 @@
-import puppeteer from "puppeteer-core"
-import chromium from "@sparticuz/chromium"
+// use when chromium-min doesn't work
+
+
+import puppeteer from "puppeteer"
 import { NextRequest, NextResponse } from "next/server";
-import { getExchangeRates } from "@/app/lib/actions/convertcurrency";
 
 export interface RequestData {
     origin : string;
@@ -22,39 +23,16 @@ export interface Flight {
     id?: number;
 };
 
-
-// add currency handling
-
-const currency_rates = new Map()
-
-
 export async function POST(req : NextRequest){
     const data : RequestData = await req.json()
-    const { origin, destination, departureDate, beginTime, endTime, nonStop, currency } = data
+    const { origin, destination, departureDate, beginTime, endTime, nonStop } = data
     if(!(origin && destination && departureDate)){
         return NextResponse.json({ error : "MISSING_INPUT"}, { status : 400 })
     }
 
     try{
         console.log("Request received...")
-        const browser = await puppeteer.launch({
-            args: [
-                '--disable-gpu',
-                '--disable-software-rasterizer',
-                '--disable-extensions',
-                '--disable-images',
-                '--no-sandbox',
-                '--disable-background-networking',
-                '--disable-flash',
-                '--disable-webgl',
-                '--disable-site-isolation-trials',
-                '--js-flags="--max-old-space-size=512"',
-                '--window-size=1280x720'
-            ],
-            defaultViewport : chromium.defaultViewport,
-            executablePath : await chromium.executablePath(),
-            headless : true,
-        });
+        const browser = await puppeteer.launch({ headless : true, defaultViewport : {height : 1920, width : 1080} });
         console.log("Browser initiated!")
 
         const page = await browser.newPage()
@@ -177,17 +155,9 @@ export async function POST(req : NextRequest){
             relevantFlights = relevantFlights.filter(x => x.stop === false)
         }
 
-        if ( currency_rates.size === 0 ) {
-            await setCurrencyRates()
-        }
-
-
         let id = 1;
         relevantFlights.forEach(x => {
             x.id = id++;
-            if (x.price){
-                x.price = (Number(x.price) * currency_rates.get(currency)).toString()
-            }
         })
 
 
@@ -199,9 +169,9 @@ export async function POST(req : NextRequest){
 };
 
 
-async function setCurrencyRates(){
-    const exchangeRates = await getExchangeRates()
-    for ( const key in exchangeRates ) {
-        currency_rates.set(key, exchangeRates[key])
-    } 
-}
+
+// import { NextResponse } from "next/server";
+
+// export async function GET(){
+//     return NextResponse.json({message : "hello"}, { status : 200 })
+// }

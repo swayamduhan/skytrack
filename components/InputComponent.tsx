@@ -22,11 +22,11 @@ export default function InputComponent(){
     const [drawerOpen, setDrawerOpen] = useState(false)
 
     return (
-        <div className="bg-black/5 dark:bg-white/10 rounded-md p-10 flex flex-col gap-10 font-satoshi text-[var(--foreground)] dark:text-[var(--foreground-dark)] relative">
+        <div className="bg-black/5 max-w-[100vw] dark:bg-white/10 rounded-md py-10 px-6 sm:px-10 flex flex-col gap-6 sm:gap-10 font-satoshi text-[var(--foreground)] dark:text-[var(--foreground-dark)] relative">
             <Drawer drawerOpen={drawerOpen} setDrawerOpen={setDrawerOpen}>
-                <div className="grid grid-cols-2 w-full gap-48 text-xl mb-10">
+                <div className="sm:grid sm:grid-cols-2 w-full gap-6 xl:gap-48 text-md xl:text-xl mb-10">
                     <div>
-                        <h1 className="text-3xl font-bold border-b pb-2 border-gray-600">How to search?</h1>
+                        <h1 className="text-xl xl:text-3xl font-bold border-b pb-2 border-gray-600">How to search?</h1>
                         <ol className="mt-4 list-decimal pl-[1rem]">
                             <li>by default, your saved flight cards are displayed on the right ( if you are logged in )</li>
                             <li>enter origin and destination city {"( "}use airport abbreviations wherever possible. data is scraped directly from google flights, some city names can cause wrong results {")"}.</li>
@@ -36,8 +36,8 @@ export default function InputComponent(){
                             <li>click search.</li>
                         </ol>
                     </div>
-                    <div>
-                        <h1 className="text-3xl font-bold border-b pb-2 border-gray-600">Getting notified & additional info</h1>
+                    <div className="mt-6 sm:mt-0">
+                        <h1 className="text-xl xl:text-3xl font-bold border-b pb-2 border-gray-600">Getting notified & additional info</h1>
                         <ol className="mt-4 list-decimal pl-[1rem]">
                             <li>TO GET NOTIFIED : 
                                 <ul className="list-disc pl-[1.5rem]">
@@ -52,18 +52,18 @@ export default function InputComponent(){
                     </div>
                 </div>
             </Drawer>
-            <div className="absolute top-5 right-5">
+            <div className="absolute top-2 left-2 sm:left-[unset] sm:top-5 sm:right-5">
                 <div className="flex justify-center items-center gap-2 font-bold cursor-pointer text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-all duration-200" onClick={()=>setDrawerOpen(true)}>
                     <Info className="w-6 h-6"/>
                     <div>how to use?</div>
                 </div>
             </div>
-            <div className="font-black text-3xl">Enter Flight Details</div>
-            <div className="grid grid-cols-2 gap-20">
+            <div className="font-black text-2xl sm:text-3xl">Enter Flight Details</div>
+            <div className="grid sm:grid-cols-2 gap-6 sm:gap-20">
                 <InputBox state={from} setState={setFrom} label="Origin" placeholder="DEL"/>
                 <InputBox state={to} setState={setTo} label="Destination" placeholder="GOA"/>
             </div>
-            <div className="grid grid-cols-2 gap-20">
+            <div className="grid sm:grid-cols-2 gap-6 sm:gap-20">
                     <div className="flex flex-col gap-2">
                         <div className="font-bold">Time Range Start</div>
                         <TimePicker value={startTime} onChange={setStartTime}/>
@@ -80,7 +80,7 @@ export default function InputComponent(){
             <div className="flex">
                 <Checkbox checked={checked} setChecked={setChecked} label="Show NonStop flights only"/>
             </div>
-            <div className="grid grid-cols-2 gap-20 font-bold">
+            <div className="grid grid-cols-2 gap-6 sm:gap-20 mt-2 sm:mt-0 font-bold">
                 <Button from={from} to={to} departureDate={selectedDate} startTime={startTime} endTime={endTime} checked={checked}/>
                 <SessionProvider>
                 <FavButton origin={from} destination={to} departureDate={selectedDate.toDateString()} beginTime={makeTimeString(startTime)} endTime={makeTimeString(endTime)} nonStop={checked}/>

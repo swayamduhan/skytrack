@@ -1,8 +1,11 @@
+import { getExchangeRates } from "@/app/lib/actions/convertcurrency";
+import { getScrapeRoute } from "@/app/lib/scraperoute";
 import { prisma } from "@/prisma/prisma";
 import axios from "axios";
 import { NextResponse } from "next/server";
 
 // send email to user to notify if error in doing routines
+// only need to do currency stuff in prod env
 
 export interface FlightCard {
     id: string;
@@ -14,6 +17,7 @@ export interface FlightCard {
     departureDate : string;
     nonStop : boolean;
     notify : boolean;
+    currency : string;
     threshold : number | null;
     createdAt : Date;
 }
@@ -38,7 +42,13 @@ interface MailProps {
     time : string;
     threshold : number | null;
     price : string;
+    currency : string;
 }
+
+
+const currency_rates = new Map()
+
+
 
 function forexParse(s : string){
     return parseFloat(s.replace(/[^0-9.-]/g, ""))
@@ -70,13 +80,14 @@ async function fetchAndMail(card : FlightCard){
     }
 
     try {
-        const response = await axios.post(`${process.env.NEXTAUTH_URL}api/scrape`, requestBody)
+        const scrapeRoute = getScrapeRoute()
+        const response = await axios.post(`${process.env.NEXTAUTH_URL}api/${scrapeRoute}`, requestBody)
         const flights : FlightSchema[] = response.data.flights
         if(flights.length === 0) {
             return
         }
 
-        // @ts-ignore already checked if threshold is present when putting in filteredCards
+        // @ts-expect-error already checked if threshold is present when putting in filteredCards
         const optimisedThreshold = parseInt(card.threshold * 1.1)
 
         // get minimum price
@@ -90,6 +101,18 @@ async function fetchAndMail(card : FlightCard){
                 minimumPrice = price
                 minimumPriceIndex = i
             }
+        }
+
+        // convert price to clients currency
+        // fetch currency_rates if not available
+        if ( process.env.NEXT_PUBLIC_ENV == "prod" && currency_rates.size === 0 ) {
+            await setCurrencyRates()
+        }
+
+        // convert
+        if ( process.env.NEXT_PUBLIC_KEY == "prod" ) {
+            const rate = currency_rates.get(card.currency)
+            minimumPrice = rate * minimumPrice
         }
 
 
@@ -108,7 +131,8 @@ async function fetchAndMail(card : FlightCard){
                 date : card.departureDate,
                 time : flights[minimumPriceIndex].beginTime,
                 threshold : card.threshold,
-                price : flights[minimumPriceIndex].price
+                price : flights[minimumPriceIndex].price,
+                currency : card.currency
             }
         } else {
             console.log("NOT AVAILABLE AT DISCOUNT")
@@ -117,7 +141,7 @@ async function fetchAndMail(card : FlightCard){
 
         // mail price and discount to user
         console.log("Sending email to user ....")
-        // @ts-ignore
+        // @ts-expect-error
         if(minimumPrice < card.threshold){
             reqBody.type = "FLIGHT_DROP"
             await axios.post(`${process.env.NEXTAUTH_URL}api/mail`, reqBody)
@@ -178,4 +202,12 @@ export async function GET(){
     } catch ( err ) {
         return NextResponse.json({ message : "ERROR_OCCURED", error : err }, { status : 500 })
     }
+}
+
+
+async function setCurrencyRates(){
+    const exchangeRates = await getExchangeRates()
+    for ( const key in exchangeRates ) {
+        currency_rates.set(key, exchangeRates[key])
+    } 
 }

@@ -1,5 +1,6 @@
 import { DarkModeButton } from "@/components/DarkModeButton";
 import { JotaiProvider } from "../JotaiProvider";
+import Image from "next/image";
 
 export default function AuthLayout({ children } : { children: React.ReactNode }) {
 
@@ -32,12 +33,12 @@ export default function AuthLayout({ children } : { children: React.ReactNode })
 
         <div className="absolute min-h-screen inset-0 flex items-center justify-center">
             <div className="w-2/3 h-4/5 relative">
-                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Airplane.png" alt="Airplane" width="100" height="100" className="absolute top-[10%] left-[] rotate-[-20deg]"/>
-                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Cloud.png" alt="Cloud" width="100" height="100" className="absolute bottom-[20%] left-[10%]"/>
-                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Eight O’Clock.png" alt="Eight O’Clock" width="100" height="100" className="absolute top-[7%] right-[23%]"/>
-                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Sun.png" alt="Sun" width="100" height="100" className="absolute top-[50%] right-[5%]"/>
-                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Airplane.png" alt="Airplane" width="100" height="100" className="absolute bottom-[0%] right-[35%] rotate-[-70deg]"/>
-                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Cloud.png" alt="Cloud" width="100" height="100" className="absolute top-[30%] left-[40%]"/>
+                <Image src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Airplane.png" alt="Airplane" width="100" height="100" className="absolute top-[10%] left-[] rotate-[-20deg]"/>
+                <Image src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Cloud.png" alt="Cloud" width="100" height="100" className="absolute bottom-[20%] left-[10%]"/>
+                <Image src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Eight O’Clock.png" alt="Eight O’Clock" width="100" height="100" className="absolute top-[7%] right-[23%]"/>
+                <Image src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Sun.png" alt="Sun" width="100" height="100" className="absolute top-[50%] right-[5%]"/>
+                <Image src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Airplane.png" alt="Airplane" width="100" height="100" className="absolute bottom-[0%] right-[35%] rotate-[-70deg]"/>
+                <Image src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Cloud.png" alt="Cloud" width="100" height="100" className="absolute top-[30%] left-[40%]"/>
             </div>
         </div>
         {children}

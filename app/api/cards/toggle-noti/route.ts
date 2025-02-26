@@ -39,6 +39,6 @@ export async function POST( req : NextRequest ){
 
         return NextResponse.json({ message : "SUCCESS" }, { status : 200 })
     } catch (err) {
-        return NextResponse.json({ message : "ERROR_ENCOUNTERED" }, { status : 500 })
+        return NextResponse.json({ message : "ERROR_ENCOUNTERED", error : err }, { status : 500 })
     }
 }

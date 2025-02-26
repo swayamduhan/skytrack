@@ -35,7 +35,7 @@ export async function POST(req : NextRequest){
         await axios.post(`${process.env.NEXTAUTH_URL}api/mail`, mailBody)
 
         return NextResponse.json({ message : "USER_CREATED", id : createdUser.id })
-    } catch (e) {
-        return NextResponse.json({ message : "ERROR_ENCOUNTERED "}, { status : 500 })
+    } catch (err) {
+        return NextResponse.json({ message : "ERROR_ENCOUNTERED", error : err}, { status : 500 })
     }
 }

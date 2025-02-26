@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
 export async function GET(){
-    return NextResponse.json({ message : "Server is up and running!"}, { status : 200 })
+    const env = process.env.NEXT_PUBLIC_ENV
+    return NextResponse.json({ message : "Server is up and running!", environment : env }, { status : 200 })
 }

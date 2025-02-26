@@ -40,6 +40,7 @@ model flightCard {
   nonStop Boolean @default(false)
   notify Boolean @default(false)
   threshold Int? 
+  currency String @default("USD")
   createdAt DateTime @default(now())
   user User @relation(fields: [userId], references: [id])
 }

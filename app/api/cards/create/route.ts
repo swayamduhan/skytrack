@@ -9,13 +9,13 @@ interface createCardProps {
     endTime : string;
     departureDate : string;
     nonStop : boolean;
+    currency : string;
     notify : boolean,
     threshold : number
 }
 
 export async function POST(req : NextRequest){
-    const { userId, origin, destination, beginTime, endTime, departureDate, nonStop, notify, threshold } : createCardProps = await req.json()
-
+    const { userId, origin, destination, beginTime, endTime, departureDate, nonStop, currency, notify, threshold } : createCardProps = await req.json()
     if(!userId){
         return NextResponse.json({ message : "USER_NOT_LOGGED_IN"}, { status : 400 })
     }
@@ -33,6 +33,7 @@ export async function POST(req : NextRequest){
                 beginTime,
                 endTime,
                 departureDate,
+                currency,
                 nonStop,
                 threshold
             }
@@ -50,6 +51,7 @@ export async function POST(req : NextRequest){
                 beginTime,
                 endTime,
                 departureDate,
+                currency,
                 nonStop,
                 notify,
                 threshold
@@ -59,6 +61,6 @@ export async function POST(req : NextRequest){
         return NextResponse.json({ message : "Card created successfully!" }, { status : 200 })
 
     } catch (err) {
-        return NextResponse.json({ message : "Internal Server Error"}, { status : 500 })
+        return NextResponse.json({ message : "Internal Server Error", error : err }, { status : 500 })
     }
 }
